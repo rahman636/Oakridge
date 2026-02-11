@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAS Fraud Detection | AI-Powered Insurance Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #00617f;
+            --secondary-blue: #003b4d;
+            --accent-blue: #00b0f0;
+            --light-blue: #e6f4f9;
+            --success-green: #7cb342;
+            --warning-orange: #f39c12;
+            --danger-red: #e74c3c;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #343a40;
+            --text-color: #333;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --border-radius: 8px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo i {
+            color: var(--primary-blue);
+            font-size: 32px;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-text h1 {
+            color: var(--primary-blue);
+            font-size: 24px;
+            line-height: 1.2;
+        }
+        
+        .logo-text span {
+            color: var(--accent-blue);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        
+        nav {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            position: relative;
+        }
+        
+        .nav-links li a {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: 500;
+            padding: 10px 15px;
+            display: block;
+            transition: var(--transition);
+            border-radius: var(--border-radius);
+        }
+        
+        .nav-links li a:hover {
+            color: var(--primary-blue);
+            background-color: var(--light-blue);
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 220px;
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            z-index: 1;
+            padding: 10px 0;
+        }
+        
+        .dropdown-content a {
+            padding: 10px 20px;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 20px;
+        }
+        
+        .btn-login, .btn-signup {
+            padding: 8px 20px;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+        
+        .btn-login {
+            background-color: transparent;
+            color: var(--primary-blue);
+            border: 1px solid var(--primary-blue);
+        }
+        
+        .btn-login:hover {
+            background-color: var(--light-blue);
+        }
+        
+        .btn-signup {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+        
+        .btn-signup:hover {
+            background-color: var(--secondary-blue);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary-blue);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none" opacity="0.1"><path d="M0,0 L100,0 L100,100 Z" fill="white"/></svg>');
+            background-size: cover;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .btn-hero {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 12px 30px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-block;
+            text-decoration: none;
+        }
+        
+        .btn-hero:hover {
+            background-color: #0098d6;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Main Content Sections */
+        .section-title {
+            text-align: center;
+            margin: 60px 0 40px;
+            color: var(--secondary-blue);
+        }
+        
+        .section-title h2 {
+            font-size: 32px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+        
+        .section-title h2::after {
+            content: "";
+            position: absolute;
+            width: 70px;
+            height: 3px;
+            background-color: var(--accent-blue);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Tabs for Main Features */
+        .tabs-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 60px;
+            overflow: hidden;
+        }
+        
+        .tabs-header {
+            display: flex;
+            background-color: var(--light-blue);
+            border-bottom: 1px solid var(--medium-gray);
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--dark-gray);
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab-btn.active {
+            color: var(--primary-blue);
+            border-bottom: 3px solid var(--primary-blue);
+            background-color: white;
+        }
+        
+        .tab-btn:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .tab-content {
+            padding: 30px;
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .tab-content h3 {
+            color: var(--secondary-blue);
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        
+        .tab-content p {
+            margin-bottom: 20px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .feature-card {
+            background-color: var(--light-gray);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 4px solid var(--accent-blue);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+        
+        .feature-card h4 {
+            color: var(--secondary-blue);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Solutions & Industries */
+        .solutions-container, .industries-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+        
+        .solution-card, .industry-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .solution-card:hover, .industry-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .solution-icon, .industry-icon {
+            font-size: 40px;
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+        
+        .solution-card h3, .industry-card h3 {
+            color: var(--secondary-blue);
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        
+        /* User Profile Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.4s;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-header {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .close-modal:hover {
+            transform: rotate(90deg);
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(0, 176, 240, 0.2);
+        }
+        
+        .btn-submit {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+        
+        .btn-submit:hover {
+            background-color: var(--secondary-blue);
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: var(--medium-gray);
+        }
+        
+        .divider span {
+            background-color: white;
+            padding: 0 15px;
+            color: var(--dark-gray);
+            position: relative;
+        }
+        
+        .btn-google {
+            background-color: white;
+            color: var(--dark-gray);
+            border: 1px solid var(--medium-gray);
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            width: 100%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-google:hover {
+            background-color: #f8f9fa;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .form-footer a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Dashboard */
+        .dashboard-container {
+            display: none;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin: 40px 0;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--light-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary-blue);
+        }
+        
+        .user-details h3 {
+            color: var(--secondary-blue);
+            margin-bottom: 5px;
+        }
+        
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background-color: var(--light-gray);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            border-top: 4px solid var(--primary-blue);
+        }
+        
+        .stat-card h4 {
+            color: var(--secondary-blue);
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--secondary-blue);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h4 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 18px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h4::after {
+            content: "";
+            position: absolute;
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent-blue);
+            bottom: 0;
+            left: 0;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links li a {
+            color: #cccccc;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links li a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaaaaa;
+            font-size: 14px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                box-shadow: var(--shadow);
+                border-radius: 0 0 var(--border-radius) var(--border-radius);
+                z-index: 1000;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                width: 100%;
+            }
+            
+            .nav-links li a {
+                padding: 15px 20px;
+                border-bottom: 1px solid var(--medium-gray);
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .user-actions {
+                margin-left: auto;
+                margin-right: 15px;
+            }
+            
+            .hero h2 {
+                font-size: 32px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .tabs-header {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                text-align: left;
+                border-bottom: 1px solid var(--medium-gray);
+                border-left: 3px solid transparent;
+            }
+            
+            .tab-btn.active {
+                border-left: 3px solid var(--primary-blue);
+                border-bottom: 1px solid var(--medium-gray);
+            }
+            
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Interactive elements */
+        .highlight {
+            background-color: rgba(0, 176, 240, 0.1);
+            padding: 3px 5px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <div class="logo-text">
+                    <h1>SAS Fraud Detection</h1>
+                    <span>AI-Powered Insurance Solutions</span>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#overview">Overview</a></li>
+                    <li class="dropdown">
+                        <a href="#">Solutions <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="#ai">Artificial Intelligence</a>
+                            <a href="#fraud">Fraud Detection</a>
+                            <a href="#iot">IoT Analytics</a>
+                            <a href="#marketing">Marketing</a>
+                            <a href="#risk">Risk Management</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#">Industries <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="#banking">Banking</a>
+                            <a href="#public-sector">Public Sector</a>
+                            <a href="#insurance">Insurance</a>
+                            <a href="#healthcare">Healthcare</a>
+                            <a href="#life-sciences">Life Sciences</a>
+                            <a href="#manufacturing">Manufacturing</a>
+                        </div>
+                    </li>
+                    <li><a href="#governance">Governance</a></li>
+                    <li><a href="#how-to-buy">How to Buy</a></li>
+                    <li><a href="#generative-ai">Generative AI</a></li>
+                </ul>
+                
+                <div class="user-actions">
+                    <button class="btn-login" id="loginBtn">Login</button>
+                    <button class="btn-signup" id="signupBtn">Sign Up</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h2>Advanced Fraud Detection for Insurance</h2>
+            <p>Leverage cutting-edge AI and machine learning to identify, prevent, and investigate fraudulent claims in real-time. Reduce losses by up to 30% with SAS Fraud Detection.</p>
+            <a href="#how-to-buy" class="btn-hero">Request a Demo</a>
+        </div>
+    </section>
+
+    <!-- Main Content Tabs -->
+    <div class="container">
+        <div class="section-title">
+            <h2>Fraud Detection Platform</h2>
+            <p>Comprehensive tools for detecting and preventing insurance fraud</p>
+        </div>
+        
+        <div class="tabs-container">
+            <div class="tabs-header">
+                <button class="tab-btn active" data-tab="overview">Overview</button>
+                <button class="tab-btn" data-tab="data-management">Data Management</button>
+                <button class="tab-btn" data-tab="explore-models">Explore & Models</button>
+                <button class="tab-btn" data-tab="deploy-insights">Deploy Insights</button>
+                <button class="tab-btn" data-tab="governance">Governance</button>
+                <button class="tab-btn" data-tab="how-to-buy">How to Buy</button>
+                <button class="tab-btn" data-tab="generative-ai">Generative AI</button>
+            </div>
+            
+            <div class="tab-content active" id="overview">
+                <h3>Platform Overview</h3>
+                <p>SAS Fraud Detection provides a comprehensive suite of tools designed to identify, prevent, and investigate fraudulent insurance claims using advanced analytics and artificial intelligence.</p>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-bolt"></i> Real-time Detection</h4>
+                        <p>Identify suspicious claims as they are submitted with real-time analytics and scoring.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-network-wired"></i> Network Analysis</h4>
+                        <p>Uncover complex fraud rings and organized crime through relationship mapping.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-robot"></i> AI-Powered Insights</h4>
+                        <p>Leverage machine learning models that continuously improve detection accuracy.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-chart-line"></i> Predictive Analytics</h4>
+                        <p>Anticipate emerging fraud patterns before they impact your bottom line.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="data-management">
+                <h3>Data Management & Integration</h3>
+                <p>Consolidate and prepare data from multiple sources for effective fraud analysis.</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-database"></i> Unified Data Platform</h4>
+                        <p>Integrate claims data, policy information, external data sources, and historical records.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-cloud-upload-alt"></i> Cloud & On-Premises</h4>
+                        <p>Deploy in your preferred environment with flexible architecture options.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-shield-alt"></i> Data Governance</h4>
+                        <p>Ensure data quality, privacy, and compliance with regulatory requirements.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="explore-models">
+                <h3>Explore Data & Build Models</h3>
+                <p>Interactive tools for data exploration and machine learning model development.</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-search"></i> Visual Investigation</h4>
+                        <p>Interactive dashboards to explore suspicious patterns and relationships.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-cogs"></i> Model Studio</h4>
+                        <p>Build, test, and compare multiple machine learning algorithms.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-project-diagram"></i> Network Link Analysis</h4>
+                        <p>Visualize connections between claimants, providers, and locations.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="deploy-insights">
+                <h3>Deploy Insights & Take Action</h3>
+                <p>Operationalize fraud detection insights across your organization.</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-bell"></i> Alert Management</h4>
+                        <p>Configure and prioritize alerts for investigation teams.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-tasks"></i> Case Management</h4>
+                        <p>Streamline investigation workflows with integrated case management.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-chart-pie"></i> Performance Monitoring</h4>
+                        <p>Track detection accuracy, false positives, and ROI metrics.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="governance">
+                <h3>Governance & Compliance</h3>
+                <p>Ensure ethical AI practices and regulatory compliance across all fraud detection activities.</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-balance-scale"></i> Regulatory Compliance</h4>
+                        <p>Built-in controls for GDPR, HIPAA, and insurance industry regulations.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-user-shield"></i> Model Governance</h4>
+                        <p>Comprehensive model lifecycle management with audit trails.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-eye"></i> Explainable AI</h4>
+                        <p>Transparent model decisions with clear reasoning for investigations.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="how-to-buy">
+                <h3>How to Purchase</h3>
+                <p>Flexible purchasing options to fit your organization's needs and budget.</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-cloud"></i> SaaS Subscription</h4>
+                        <p>Cloud-based solution with predictable monthly or annual pricing.</p>
+                        <button class="btn-submit" style="margin-top: 15px;">View Plans</button>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-server"></i> On-Premises License</h4>
+                        <p>Perpetual license for organizations with specific infrastructure requirements.</p>
+                        <button class="btn-submit" style="margin-top: 15px;">Request Quote</button>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-handshake"></i> Enterprise Agreement</h4>
+                        <p>Customized enterprise solutions with dedicated support and training.</p>
+                        <button class="btn-submit" style="margin-top: 15px;">Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="generative-ai">
+                <h3>Generative AI Capabilities</h3>
+                <p>Leverage cutting-edge generative AI for enhanced fraud detection and investigation.</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-comment-alt"></i> Synthetic Data Generation</h4>
+                        <p>Create realistic training data while protecting sensitive information.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-file-alt"></i> Automated Report Generation</h4>
+                        <p>Generate investigation reports and summaries with natural language.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-lightbulb"></i> Anomaly Explanation</h4>
+                        <p>Get natural language explanations for why claims were flagged as suspicious.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Solutions Section -->
+        <div class="section-title">
+            <h2>Solutions</h2>
+            <p>Comprehensive analytics solutions across multiple domains</p>
+        </div>
+        
+        <div class="solutions-container" id="solutions">
+            <div class="solution-card" id="ai">
+                <div class="solution-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>Artificial Intelligence</h3>
+                <p>End-to-end AI platform for building, deploying, and managing machine learning models at scale.</p>
+            </div>
+            
+            <div class="solution-card" id="fraud">
+                <div class="solution-icon">
+                    <i class="fas fa-user-secret"></i>
+                </div>
+                <h3>Fraud & Security Intelligence</h3>
+                <p>Detect, prevent, and investigate fraud across insurance, banking, and government sectors.</p>
+            </div>
+            
+            <div class="solution-card" id="iot">
+                <div class="solution-icon">
+                    <i class="fas fa-satellite-dish"></i>
+                </div>
+                <h3>IoT Analytics</h3>
+                <p>Harness sensor and device data for predictive maintenance and operational intelligence.</p>
+            </div>
+            
+            <div class="solution-card" id="marketing">
+                <div class="solution-icon">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <h3>Marketing Analytics</h3>
+                <p>Optimize customer engagement and marketing ROI with advanced analytics.</p>
+            </div>
+            
+            <div class="solution-card" id="risk">
+                <div class="solution-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h3>Risk Management</h3>
+                <p>Identify, assess, and mitigate risks across financial, operational, and compliance domains.</p>
+            </div>
+        </div>
+        
+        <!-- Industries Section -->
+        <div class="section-title">
+            <h2>Industries</h2>
+            <p>Serving diverse sectors with tailored fraud detection solutions</p>
+        </div>
+        
+        <div class="industries-container">
+            <div class="industry-card" id="banking">
+                <div class="industry-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <h3>Banking</h3>
+                <p>Combat payment fraud, loan application fraud, and money laundering.</p>
+            </div>
+            
+            <div class="industry-card" id="public-sector">
+                <div class="industry-icon">
+                    <i class="fas fa-landmark"></i>
+                </div>
+                <h3>Public Sector</h3>
+                <p>Detect benefit fraud, tax evasion, and procurement irregularities.</p>
+            </div>
+            
+            <div class="industry-card" id="insurance">
+                <div class="industry-icon">
+                    <i class="fas fa-car-crash"></i>
+                </div>
+                <h3>Insurance</h3>
+                <p>Identify fraudulent claims across auto, health, property, and life insurance.</p>
+            </div>
+            
+            <div class="industry-card" id="healthcare">
+                <div class="industry-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h3>Healthcare</h3>
+                <p>Detect billing fraud, prescription fraud, and provider misconduct.</p>
+            </div>
+            
+            <div class="industry-card" id="life-sciences">
+                <div class="industry-icon">
+                    <i class="fas fa-dna"></i>
+                </div>
+                <h3>Life Sciences</h3>
+                <p>Monitor clinical trial integrity and detect research misconduct.</p>
+            </div>
+            
+            <div class="industry-card" id="manufacturing">
+                <div class="industry-icon">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <h3>Manufacturing</h3>
+                <p>Prevent warranty fraud, supply chain fraud, and intellectual property theft.</p>
+            </div>
+        </div>
+        
+        <!-- User Dashboard (Initially Hidden) -->
+        <div class="dashboard-container" id="userDashboard">
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3 id="dashboardUserName">John Smith</h3>
+                        <p id="dashboardUserEmail">john.smith@example.com</p>
+                    </div>
+                </div>
+                <button class="btn-login" id="logoutBtn">Logout</button>
+            </div>
+            
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h4>Fraud Cases Detected</h4>
+                    <div class="stat-value">1,247</div>
+                    <p>Last 30 days</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Accuracy Rate</h4>
+                    <div class="stat-value">94.3%</div>
+                    <p>Model performance</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Cost Savings</h4>
+                    <div class="stat-value">$4.2M</div>
+                    <p>Year to date</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Active Alerts</h4>
+                    <div class="stat-value">42</div>
+                    <p>Requiring investigation</p>
+                </div>
+            </div>
+            
+            <div class="section-title" style="margin-top: 20px;">
+                <h3>Recent Activities</h3>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4><i class="fas fa-bell"></i> New Alert Generated</h4>
+                    <p>High-risk claim detected in Auto Insurance division</p>
+                    <small>2 hours ago</small>
+                </div>
+                <div class="feature-card">
+                    <h4><i class="fas fa-chart-line"></i> Model Updated</h4>
+                    <p>Fraud detection model v3.2 deployed with 5% improved accuracy</p>
+                    <small>1 day ago</small>
+                </div>
+                <div class="feature-card">
+                    <h4><i class="fas fa-file-download"></i> Report Exported</h4>
+                    <p>Monthly fraud analysis report downloaded</p>
+                    <small>3 days ago</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Login to Your Account</h3>
+                <button class="close-modal" id="closeLoginModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" class="form-control" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="Enter your password">
+                </div>
+                <button class="btn-submit" id="submitLogin">Login</button>
+                
+                <div class="divider">
+                    <span>Or continue with</span>
+                </div>
+                
+                <button class="btn-google" id="googleLogin">
+                    <i class="fab fa-google"></i> Sign in with Google
+                </button>
+                
+                <div class="form-footer">
+                    <p>Don't have an account? <a href="#" id="switchToSignup">Sign up</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Your Account</h3>
+                <button class="close-modal" id="closeSignupModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" class="form-control" placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" class="form-control" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" class="form-control" placeholder="Create a password">
+                </div>
+                <div class="form-group">
+                    <label for="signupConfirmPassword">Confirm Password</label>
+                    <input type="password" id="signupConfirmPassword" class="form-control" placeholder="Confirm your password">
+                </div>
+                <div class="form-group">
+                    <label for="signupCompany">Company</label>
+                    <input type="text" id="signupCompany" class="form-control" placeholder="Enter your company name">
+                </div>
+                <div class="form-group">
+                    <label for="signupIndustry">Industry</label>
+                    <select id="signupIndustry" class="form-control">
+                        <option value="">Select your industry</option>
+                        <option value="insurance">Insurance</option>
+                        <option value="banking">Banking</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="public-sector">Public Sector</option>
+                        <option value="life-sciences">Life Sciences</option>
+                        <option value="manufacturing">Manufacturing</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <button class="btn-submit" id="submitSignup">Create Account</button>
+                
+                <div class="divider">
+                    <span>Or sign up with</span>
+                </div>
+                
+                <button class="btn-google" id="googleSignup">
+                    <i class="fab fa-google"></i> Sign up with Google
+                </button>
+                
+                <div class="form-footer">
+                    <p>Already have an account? <a href="#" id="switchToLogin">Login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>SAS Fraud Detection</h4>
+                    <p>Advanced AI-powered solutions for detecting and preventing insurance fraud across all lines of business.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#overview">Overview</a></li>
+                        <li><a href="#data-management">Data Management</a></li>
+                        <li><a href="#explore-models">Explore & Models</a></li>
+                        <li><a href="#deploy-insights">Deploy Insights</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Solutions</h4>
+                    <ul class="footer-links">
+                        <li><a href="#ai">Artificial Intelligence</a></li>
+                        <li><a href="#fraud">Fraud Detection</a></li>
+                        <li><a href="#iot">IoT Analytics</a></li>
+                        <li><a href="#marketing">Marketing Analytics</a></li>
+                        <li><a href="#risk">Risk Management</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact Us</h4>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-phone"></i> 1-800-727-0025</li>
+                        <li><i class="fas fa-envelope"></i> fraud@sas.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> SAS Campus Drive, Cary, NC</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 SAS Institute Inc. All rights reserved. | Privacy Policy | Terms of Use</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const loginModal = document.getElementById('loginModal');
+        const signupModal = document.getElementById('signupModal');
+        const closeLoginModal = document.getElementById('closeLoginModal');
+        const closeSignupModal = document.getElementById('closeSignupModal');
+        const submitLogin = document.getElementById('submitLogin');
+        const submitSignup = document.getElementById('submitSignup');
+        const googleLogin = document.getElementById('googleLogin');
+        const googleSignup = document.getElementById('googleSignup');
+        const switchToSignup = document.getElementById('switchToSignup');
+        const switchToLogin = document.getElementById('switchToLogin');
+        const userDashboard = document.getElementById('userDashboard');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const dashboardUserName = document.getElementById('dashboardUserName');
+        const dashboardUserEmail = document.getElementById('dashboardUserEmail');
+        
+        // Mobile menu toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Tab functionality
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabBtns.forEach(tab => tab.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                btn.classList.add('active');
+                const tabId = btn.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Modal functionality
+        loginBtn.addEventListener('click', () => {
+            loginModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        signupBtn.addEventListener('click', () => {
+            signupModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        closeLoginModal.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        closeSignupModal.addEventListener('click', () => {
+            signupModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Switch between login and signup modals
+        switchToSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginModal.style.display = 'none';
+            signupModal.style.display = 'flex';
+        });
+        
+        switchToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            signupModal.style.display = 'none';
+            loginModal.style.display = 'flex';
+        });
+        
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            if (e.target === signupModal) {
+                signupModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Login functionality
+        submitLogin.addEventListener('click', () => {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (email && password) {
+                // Simple validation - in a real app, this would connect to a backend
+                if (password.length >= 6) {
+                    // Show success message
+                    alert('Login successful! Redirecting to dashboard...');
+                    
+                    // Close modal
+                    loginModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                    
+                    // Show dashboard
+                    userDashboard.style.display = 'block';
+                    
+                    // Update user info
+                    dashboardUserName.textContent = email.split('@')[0];
+                    dashboardUserEmail.textContent = email;
+                    
+                    // Scroll to dashboard
+                    userDashboard.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    alert('Password must be at least 6 characters.');
+                }
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+        
+        // Signup functionality
+        submitSignup.addEventListener('click', () => {
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            const company = document.getElementById('signupCompany').value;
+            const industry = document.getElementById('signupIndustry').value;
+            
+            if (name && email && password && confirmPassword && company && industry) {
+                if (password === confirmPassword) {
+                    if (password.length >= 6) {
+                        // Show success message
+                        alert('Account created successfully! Welcome to SAS Fraud Detection.');
+                        
+                        // Close modal
+                        signupModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                        
+                        // Show dashboard
+                        userDashboard.style.display = 'block';
+                        
+                        // Update user info
+                        dashboardUserName.textContent = name;
+                        dashboardUserEmail.textContent = email;
+                        
+                        // Scroll to dashboard
+                        userDashboard.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        alert('Password must be at least 6 characters.');
+                    }
+                } else {
+                    alert('Passwords do not match.');
+                }
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+        
+        // Google login/signup simulation
+        googleLogin.addEventListener('click', () => {
+            alert('Google login would be implemented with OAuth in a real application.');
+        });
+        
+        googleSignup.addEventListener('click', () => {
+            alert('Google signup would be implemented with OAuth in a real application.');
+        });
+        
+        // Logout functionality
+        logoutBtn.addEventListener('click', () => {
+            userDashboard.style.display = 'none';
+            alert('You have been logged out.');
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Close mobile menu if open
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    
+                    // Scroll to target
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Highlight active section on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section, .section-title, .tabs-container, .solutions-container, .industries-container');
+            const navItems = document.querySelectorAll('.nav-links a');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === `#${current}`) {
+                    item.classList.add('active');
+                }
+            });
+        });
+        
+        // Initialize with some interactive effects
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add hover effects to cards
+            const cards = document.querySelectorAll('.solution-card, .industry-card, .feature-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Add pulse animation to CTA buttons
+            const ctaButtons = document.querySelectorAll('.btn-hero');
+            ctaButtons.forEach(btn => {
+                btn.classList.add('pulse');
+            });
+            
+            // Simulate user session check
+            const isLoggedIn = localStorage.getItem('sasLoggedIn');
+            if (isLoggedIn) {
+                userDashboard.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
